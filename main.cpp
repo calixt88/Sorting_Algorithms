@@ -6,6 +6,12 @@ void bubbleSort(int randomArray[], int sizeOfArray);
 void insertionSort(int randomArray[], int sizeOfArray);
 void quickSort(int randomArray[], int sizeOfArray);
 
+/*
+ * TODO: Implement duration of algorithms
+ * TODO: Implement a run all algorithms and check which is the fastest
+ * TODO: Implement quickSort
+ */
+
 int main() {
 
     std::cout << "Randomize an Array of Numbers" << std::endl;
