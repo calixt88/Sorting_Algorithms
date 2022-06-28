@@ -1,16 +1,17 @@
 #include <iostream>
+#include <chrono>
+
+#include "algorithms.h"
+/*
+ * TODO: Implement merge sort
+ * TODO: Implement quick sort
+ * TODO: Implement random sort
+ * TODO: Implement a run all algorithms and display times
+ * TODO: Place comment headers for each of the files
+ * TODO: Clean up code
+ */
 
 void display(int randomArray[], int sizeOfArray);
-void swapIndex(int *a, int *b);
-void bubbleSort(int randomArray[], int sizeOfArray);
-void insertionSort(int randomArray[], int sizeOfArray);
-void quickSort(int randomArray[], int sizeOfArray);
-
-/*
- * TODO: Implement duration of algorithms
- * TODO: Implement a run all algorithms and check which is the fastest
- * TODO: Implement quickSort
- */
 
 int main() {
 
@@ -19,7 +20,6 @@ int main() {
     std::string sizeOfArrayInput = " ";
     std::cin >> sizeOfArrayInput;
     int sizeOfArray = std::stoi(sizeOfArrayInput);
-
     int randomArray[sizeOfArray];
 
     for(int i = 0; i < sizeOfArray; i++){
@@ -31,27 +31,44 @@ int main() {
 
     const int numOfAlgorithms = 4;
     std::string algorithms[numOfAlgorithms] = {"Bubble Sort (B)", "Quick Sort (Q)", "insertion Sort (I)", "Run all Algorithms (A)"};
-    attempt:
+
+    PROMPT:
     std::cout << "Please Choose a Sorting Algorithm" << std::endl;
 
-    for(int i = 0; i < numOfAlgorithms; i++){
-        std::cout << algorithms[i] << std::endl;
+    for(auto & algorithm : algorithms){
+        std::cout << algorithm << std::endl;
     }
 
-    std::string algorithm = "";
+    std::string algorithm;
     std::cin >> algorithm;
+    std::chrono::steady_clock::time_point algorithmStart = std::chrono::steady_clock::now();
 
-    if(algorithm == "B" || algorithm == "b"){
-        bubbleSort(randomArray, sizeOfArray);
-    }if(algorithm == "Q" || algorithm == "q"){
-        quickSort(randomArray, sizeOfArray);
-    }if(algorithm == "I" || algorithm == "i"){
-        insertionSort(randomArray, sizeOfArray);
+    if(algorithm == "B" || algorithm == "b" ||  algorithm == "BubbleSort") {
+        algorithm = "Bubble Sort";
+        algorithms::bubbleSort(randomArray, sizeOfArray);
+    }else if(algorithm == "Q" || algorithm == "q" || algorithm == "QuickSort") {
+        algorithm = "Quick Sort";
+        algorithms::quickSort(randomArray, sizeOfArray);
+    }else if(algorithm == "I" || algorithm == "i" || algorithm == "InsertionSort") {
+        algorithm = "Insertion Sort";
+        algorithms::insertionSort(randomArray, sizeOfArray);
+    }else if(algorithm == "m" || algorithm == "M"){
+        algorithm = "Merge Sort";
+        algorithms::mergeSort(randomArray, sizeOfArray);
+    }else if(algorithm == "R" || algorithm == "r" || algorithm == "RandomSort") {
+        algorithm = "Random Sort";
+        algorithms::randomSort(randomArray, sizeOfArray);
+    }else {
+        goto PROMPT;
     }
+
+    std::chrono::steady_clock::time_point algorithmEnd = std::chrono::steady_clock::now();
 
     display(randomArray, sizeOfArray);
-
+    std::cout << algorithm << "took " << std::chrono::duration_cast<std::chrono::seconds>
+            (algorithmEnd - algorithmStart).count() << " seconds to complete";
     return 0;
+
 }
 
 void display(int randomArray[], int sizeOfArray){
@@ -64,39 +81,3 @@ void display(int randomArray[], int sizeOfArray){
     }
     std::cout << "]" << std::endl << std::endl;
 }
-
-void swapIndex(int *a,int *b){
-    int temp=*a;
-    *a=*b;
-    *b=temp;
-}
-
-void bubbleSort(int randomArray[], int sizeOfArray){
-    for(int i = 0; i < sizeOfArray; i++){
-        for(int j = 0; j < sizeOfArray; j++){
-            if(randomArray[j] > randomArray[j+1]){
-                swapIndex(&randomArray[j], &randomArray[j+1]);
-            }
-        }
-    }
-    std::cout<<"Bubble Sorted ";
-}
-
-void insertionSort(int randomArray[], int sizeOfArray){
-    for(int i = 0; i < sizeOfArray; i++){
-       int key = randomArray[i];
-       int j = i - 1;
-
-       while(key < randomArray[j] && j >= 0){
-           randomArray[j + 1] = randomArray[j];
-           --j;
-       }
-        randomArray[j + 1] = key;
-    }
-    std::cout<<"Insertion Sorted ";
-}
-
-void quickSort(int randomArray[], int sizeOfArray){
-
-}
-
